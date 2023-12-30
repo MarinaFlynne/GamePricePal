@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using Newtonsoft.Json;
 
-// uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
+// Uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
 
 namespace Game_DB_Tool
 {
@@ -15,34 +16,24 @@ namespace Game_DB_Tool
             // Get the API key from the config json file
             // TODO make a config class
             // TODO make the tool ask for your API key on startup and save it in a config file
-            string configFilePath = "Config.json";
-            string itadApiKeyProperty = "itad_api_key";
-            string configContent = File.ReadAllText(configFilePath);
-            JsonDocument configDocument = JsonDocument.Parse(configContent);
-            JsonElement root = configDocument.RootElement;
-            string itadApiKey = "";
-            if (root.TryGetProperty(itadApiKeyProperty, out JsonElement itadApiKeyElement))
+
+            Config config = new Config("Config.json");
+            string? itadApiKey = config.getItadApiKey();
+
+            ItadApi itadApi = new ItadApi(itadApiKey);
+
+            string? plain = await itadApi.GetPlainFromTitle("Elden ring");
+            Console.WriteLine(plain);
+            if (plain == null)
             {
-                itadApiKey = itadApiKeyElement.GetString();
+                Console.WriteLine("Game does not exist.");
             }
             else
             {
-                Console.WriteLine($"ITAD API key not found in {configFilePath}");
+                var prices = await itadApi.GetCurrentPrices(plain, "CA");
+                Console.WriteLine(prices);
             }
             
-            
-            
-            var baseAddress = new Uri("https://api.isthereanydeal.com/");
-            var httpClient = new HttpClient { BaseAddress = baseAddress };
-            var title = "lethal company";
-            var request = $"v02/game/plain/?key={itadApiKey}&title={title}";
-            var response =
-                await httpClient.GetAsync(request);
-            string responseData = await response.Content.ReadAsStringAsync();
-            
-            dynamic responseObject = JsonConvert.DeserializeObject(responseData);
-            string plainValue = responseObject.data.plain;
-            Console.WriteLine(plainValue);
             
         }
     }
