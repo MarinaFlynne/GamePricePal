@@ -13,9 +13,6 @@ namespace Game_DB_Tool
     {
         private static async Task Main(string[] args)
         {
-            // Get the API key from the config json file
-            // TODO make a config class
-            // TODO make the tool ask for your API key on startup and save it in a config file
 
             Config config = new Config("Config.json");
             string? itadApiKey = config.getItadApiKey();
