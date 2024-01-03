@@ -1,6 +1,4 @@
-﻿
-
-// Uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
+﻿// Uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
 
 namespace Game_DB_Tool;
 
@@ -13,16 +11,16 @@ internal class Program
 
         var itadApi = new ItadApi(itadApiKey);
 
-        var plain = await itadApi.GetPlainFromTitle("Halo Combat Evolved Soundtrack");
+        var plain = await itadApi.GameLookup("Elden Ring");
         Console.WriteLine(plain);
-        if (plain == null)
-        {
-            Console.WriteLine("Game does not exist.");
-        }
-        else
-        {
-            var prices = await itadApi.GetCurrentPrices(plain, "CA");
-            Console.WriteLine(prices);
-        }
+        // if (plain == null)
+        // {
+        //     Console.WriteLine("Game does not exist.");
+        // }
+        // else
+        // {
+        //     var prices = await itadApi.GetCurrentPrices(plain, "CA");
+        //     Console.WriteLine(prices);
+        // }
     }
 }
