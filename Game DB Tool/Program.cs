@@ -4,23 +4,65 @@ namespace Game_DB_Tool;
 
 internal class Program
 {
+    private const string configFilePath = "Config.json";
+
     private static async Task Main(string[] args)
     {
-        var config = new Config("Config.json");
-        var itadApiKey = config.getItadApiKey();
+        Console.WriteLine("Marina's game price tool");
+        string? itadApiKey = null;
+
+        // Check if a config file exists
+        if (File.Exists("Config.json"))
+        {
+            var config = new Config("Config.json");
+            itadApiKey = config.getItadApiKey();
+        }
+        else
+        {
+            Console.WriteLine("Enter your IsThereAnyDeal API key:");
+            itadApiKey = Console.ReadLine();
+            while (itadApiKey == null || itadApiKey.Length != 40)
+            {
+                Console.WriteLine("Invalid API key. Please enter a valid API key");
+                itadApiKey = Console.ReadLine();
+            }
+        }
+
+
+        // var config = new Config("Config.json");
+        // var itadApiKey = config.getItadApiKey();
 
         var itadApi = new ItadApi(itadApiKey);
 
-        var plain = await itadApi.GameLookup("Elden Ring");
+        Console.WriteLine("Enter the title of the game to retrieve prices for:");
+        string? title = null;
+        title = Console.ReadLine();
+        while (itadApiKey == null)
+        {
+            Console.WriteLine("Title cannot be empty, please try again.");
+            title = Console.ReadLine();
+        }
+
+        var plain = await itadApi.GetPlainFromTitle(title);
         Console.WriteLine(plain);
-        // if (plain == null)
-        // {
-        //     Console.WriteLine("Game does not exist.");
-        // }
-        // else
-        // {
-        //     var prices = await itadApi.GetCurrentPrices(plain, "CA");
-        //     Console.WriteLine(prices);
-        // }
+
+        if (plain == null)
+        {
+            Console.WriteLine("Game does not exist.");
+            return;
+        }
+
+        Price[]? prices = await itadApi.GetCurrentPrices(plain, "CA");
+
+        if (prices == null || prices.Length == 0)
+        {
+            Console.WriteLine("No prices found.");
+            return;
+        }
+
+        foreach (Price price in prices)
+        {
+            Console.WriteLine(price);
+        }
     }
 }

@@ -56,26 +56,27 @@ public class ItadApi
         return responseObject.data.plain;
     }
 
-    /// <summary>
-    ///     Retrieves the plain from the ITAD API based on the specified title.
-    /// </summary>
-    /// <param name="title">The title of the game to retrieve the plain for.</param>
-    /// <returns>The plain associated with the specified game title. Null if no plain is found.</returns>
-    public async Task<string?> GameLookup(string title)
-    {
-        var request = $"games/lookup/v1/?key={apiKey}&title={title}";
 
-        // Get an object representing the response
-        dynamic? responseObject = await ApiRequest(request);
-
-        // Check if the given title was not found in the ITAD database
-        if (responseObject.found == false)
-        {
-            return null;
-        }
-
-        return responseObject.data.game.slug;
-    }
+    // /// <summary>
+    // ///     Retrieves the plain from the ITAD API based on the specified title.
+    // /// </summary>
+    // /// <param name="title">The title of the game to retrieve the plain for.</param>
+    // /// <returns>The plain associated with the specified game title. Null if no plain is found.</returns>
+    // public async Task<string?> GameLookup(string title)
+    // {
+    //     var request = $"games/lookup/v1/?key={apiKey}&title={title}";
+    //
+    //     // Get an object representing the response
+    //     dynamic? responseObject = await ApiRequest(request);
+    //
+    //     // Check if the given title was not found in the ITAD database
+    //     if (responseObject.found == false)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     return responseObject.data.game.slug;
+    // }
 
     /// <summary>
     ///     Retrieves all of the current prices for a game.
@@ -83,37 +84,33 @@ public class ItadApi
     /// <param name="plain">The plain of the game to retrieve the prices for.</param>
     /// <param name="region">The region to retrieve prices for.</param>
     /// <returns>The list of prices for the given game along with the corresponding store that sells at that price.</returns>
-    public async Task<string?> GetCurrentPrices(string plain, string region)
+    public async Task<Price[]?> GetCurrentPrices(string plain, string region)
     {
         var request = $"/v01/game/prices/?key={apiKey}&plains={plain}&region={region}";
 
-        // Await the GetAsync method to get the HttpResponseMessage
-        var response = await httpClient.GetAsync(request);
-
-        // Check if the request was successful (status code 200-299)
-        response.EnsureSuccessStatusCode();
-
-        // Read the content of the response as a string
-        var responseData = await response.Content.ReadAsStringAsync();
-
         // Get an object representing the response
-        dynamic responseObject = JsonConvert.DeserializeObject(responseData);
+        dynamic? responseObject = await ApiRequest(request);
 
         // Get an array of the list of different prices for the video game
         var listOfPrices =
             (JArray)responseObject["data"][plain]["list"];
 
-        // For each price, print the new price, old price, priceCut and the shopId for that price
+        // For each price, create a Price object, and add that object to our array
+        Price[] prices = new Price[listOfPrices.Count];
+        int iterations = 0;
         foreach (JObject priceObject in listOfPrices)
         {
             var priceNew = (double)priceObject["price_new"];
             var priceOld = (double)priceObject["price_old"];
             var priceCut = (double)priceObject["price_cut"];
             var shopId = (string)priceObject["shop"]["id"];
-            Console.WriteLine($"new: {priceNew}, old: {priceOld}, cut: {priceCut}, shop: {shopId}");
+            Price price = new Price(priceNew, priceOld, priceCut, shopId);
+            // Console.WriteLine(price.ToString());
+            prices[iterations] = price;
+            iterations++;
         }
 
-        return null;
+        return prices;
     }
 
     /// <summary>
