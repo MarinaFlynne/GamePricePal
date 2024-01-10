@@ -17,6 +17,6 @@ public class Price
 
     public override string ToString()
     {
-        return $"new: {priceNew} | old: {priceOld} | cut: {priceCut}% | shop id: {shopId}";
+        return $"new: {priceNew} | old: {priceOld} | price cut: {priceCut}% | shop id: {shopId}";
     }
 }
