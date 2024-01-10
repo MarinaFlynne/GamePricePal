@@ -1,13 +1,11 @@
-﻿using Microsoft.VisualBasic;
+﻿using Newtonsoft.Json;
 
 namespace Game_DB_Tool;
-
-using Newtonsoft.Json;
 
 public class Config
 {
     private string? itadApiKey;
-    
+
     public Config(string configFilePath)
     {
         string configContent = File.ReadAllText(configFilePath);
