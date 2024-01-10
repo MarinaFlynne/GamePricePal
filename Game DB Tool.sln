@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game DB Tool", "Game DB Tool\Game DB Tool.csproj", "{4045E5D5-D2D2-4A48-92F7-505D0DB1B9C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamePricePal", "GamePricePal\GamePricePal.csproj", "{4045E5D5-D2D2-4A48-92F7-505D0DB1B9C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
