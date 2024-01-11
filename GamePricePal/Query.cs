@@ -36,14 +36,18 @@ public class Query
 
     private async Task Prices()
     {
-        // Make sure the parameters list has exactly 1 parameter
-        if (parameters == null || parameters.Length != 1)
+        // Make sure the parameters list has at least 1 parameter
+        if (parameters == null || parameters.Length == 0)
         {
             InvalidQuery();
             return;
         }
 
-        string title = parameters[0]!; // cannot be null
+        string title = parameters[0]!; //parameters cannot be null; has at least 1 element
+        for (int i = 1; i < parameters.Length; i++)
+        {
+            title += " " + parameters[i];
+        }
 
         // Get the plain from the API
         var plain = await itadApi.GetPlainFromTitle(title);
