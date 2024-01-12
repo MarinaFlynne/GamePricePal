@@ -56,28 +56,6 @@ public class ItadApi
         return responseObject.data.plain;
     }
 
-
-    // /// <summary>
-    // ///     Retrieves the plain from the ITAD API based on the specified title.
-    // /// </summary>
-    // /// <param name="title">The title of the game to retrieve the plain for.</param>
-    // /// <returns>The plain associated with the specified game title. Null if no plain is found.</returns>
-    // public async Task<string?> GameLookup(string title)
-    // {
-    //     var request = $"games/lookup/v1/?key={apiKey}&title={title}";
-    //
-    //     // Get an object representing the response
-    //     dynamic? responseObject = await ApiRequest(request);
-    //
-    //     // Check if the given title was not found in the ITAD database
-    //     if (responseObject.found == false)
-    //     {
-    //         return null;
-    //     }
-    //
-    //     return responseObject.data.game.slug;
-    // }
-
     /// <summary>
     ///     Retrieves all of the current prices for a game.
     /// </summary>
@@ -105,7 +83,6 @@ public class ItadApi
             var priceCut = (double)priceObject["price_cut"];
             var shopId = (string)priceObject["shop"]["id"];
             Price price = new Price(priceNew, priceOld, priceCut, shopId);
-            // Console.WriteLine(price.ToString());
             prices[iterations] = price;
             iterations++;
         }
@@ -114,13 +91,26 @@ public class ItadApi
     }
 
     /// <summary>
-    ///     Retrieves all of the current prices for a game.
+    ///     Retrieves information about the given game.
     /// </summary>
     /// <param name="plain">The plain of the game to retrieve the prices for.</param>
-    /// <param name="region">The region to retrieve prices for.</param>
-    /// <returns>The list of prices for the given game along with the corresponding store that sells at that price.</returns>
-    public async Task<Array[]> GameSearch(string title)
+    /// <returns>A Game object containing the information about the game.</returns>
+    public async Task<Game> GameInfo(string plain)
     {
-        return null;
+        var request = $"v01/game/info/?key={apiKey}&plains={plain}";
+
+        // Get an object representing the response
+        dynamic? responseObject = await ApiRequest(request);
+
+        // TODO Check if the game was found.
+
+        // Get the game data from responseObject and put it into a Game object
+        string title = responseObject["data"][plain]["title"];
+        bool isDlc = responseObject["data"][plain]["is_dlc"];
+        bool hasAchievements = responseObject["data"][plain]["achievements"];
+        bool hasTradingCards = responseObject["data"][plain]["trading_cards"];
+        Game gameObject = new Game(title, plain, isDlc, hasAchievements, hasTradingCards);
+
+        return gameObject;
     }
 }

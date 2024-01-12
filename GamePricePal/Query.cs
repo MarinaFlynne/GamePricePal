@@ -34,6 +34,7 @@ public class Query
         Console.WriteLine("Invalid query. Type 'help' to get a list of commands.");
     }
 
+    // Given the title of the game, get the prices for it
     private async Task Prices()
     {
         // Make sure the parameters list has at least 1 parameter
@@ -66,10 +67,19 @@ public class Query
             return;
         }
 
-        Console.WriteLine($"Here are all the prices for {title}");
+        // Get the title of the game
+        Game game = await itadApi.GameInfo(plain);
+        string gameTitle = game.title;
+
+        Console.WriteLine($"Here are all the prices for {gameTitle}");
         foreach (Price price in prices)
         {
             Console.WriteLine(price);
         }
+    }
+
+    // Given the title of the game, get its information
+    private async Task GameInfo()
+    {
     }
 }

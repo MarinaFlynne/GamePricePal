@@ -27,47 +27,10 @@ internal class Program
             }
         }
 
-
-        // var config = new Config("Config.json");
-        // var itadApiKey = config.getItadApiKey();
-
         ItadApi itadApi = new ItadApi(itadApiKey);
         Arguments arguments = new Arguments(args);
 
         Query query = new Query(arguments, itadApi);
         await query.RunQuery();
-
-
-        // Console.WriteLine("Enter the title of the game to retrieve prices for:");
-        // string? title = null;
-        // title = Console.ReadLine();
-        // while (title == null)
-        // {
-        //     Console.WriteLine("Title cannot be empty, please try again.");
-        //     title = Console.ReadLine();
-        // }
-
-
-        // var plain = await itadApi.GetPlainFromTitle(title);
-        // Console.WriteLine(plain);
-        //
-        // if (plain == null)
-        // {
-        //     Console.WriteLine("Game does not exist.");
-        //     return;
-        // }
-        //
-        // Price[]? prices = await itadApi.GetCurrentPrices(plain, "CA");
-        //
-        // if (prices == null || prices.Length == 0)
-        // {
-        //     Console.WriteLine("No prices found.");
-        //     return;
-        // }
-        //
-        // foreach (Price price in prices)
-        // {
-        //     Console.WriteLine(price);
-        // }
     }
 }

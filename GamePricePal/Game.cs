@@ -1,19 +1,17 @@
 ﻿namespace Game_DB_Tool;
 
-public class Game
+public class Game(string title, string id, bool isDlc, bool achievements, bool tradingCards)
 {
-    private string title;
-    private string id;
-    private string type;
-    private bool mature;
-    private string releaseDate;
+    public string title = title;
+    public string id = id;
+    public bool isDlc = isDlc;
+    public bool achievements = achievements;
+    public bool tradingCards = tradingCards;
 
-    public Game(string title, string id, string type, bool mature, string releaseDate)
+    public override string ToString()
     {
-        this.title = title;
-        this.id = id;
-        this.type = type;
-        this.mature = mature;
-        this.releaseDate = releaseDate;
+        string str =
+            $"title: {title} | id: {id} | isDlc: {isDlc} | achievements: {achievements} | tradingCards: {tradingCards}";
+        return str;
     }
 }
