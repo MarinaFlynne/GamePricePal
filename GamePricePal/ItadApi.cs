@@ -108,6 +108,7 @@ public class ItadApi
         string title = responseObject["data"][plain]["title"];
         bool isDlc = responseObject["data"][plain]["is_dlc"];
         bool hasAchievements = responseObject["data"][plain]["achievements"];
+        Console.WriteLine(responseObject["data"][plain]["achievements"]);
         bool hasTradingCards = responseObject["data"][plain]["trading_cards"];
         Game gameObject = new Game(title, plain, isDlc, hasAchievements, hasTradingCards);
 

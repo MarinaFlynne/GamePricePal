@@ -22,6 +22,9 @@ public class Query
             case "prices":
                 await Prices();
                 break;
+            case "info":
+                await GameInfo();
+                break;
             default:
                 // if the user does not enter in a correct command
                 InvalidQuery();
@@ -81,5 +84,28 @@ public class Query
     // Given the title of the game, get its information
     private async Task GameInfo()
     {
+        // Make sure the parameters list has at least 1 parameter
+        if (parameters == null || parameters.Length == 0)
+        {
+            InvalidQuery();
+            return;
+        }
+
+        string title = parameters[0]!; //parameters cannot be null; has at least 1 element
+        for (int i = 1; i < parameters.Length; i++)
+        {
+            title += " " + parameters[i];
+        }
+
+        // Get the plain from the API
+        var plain = await itadApi.GetPlainFromTitle(title);
+        if (plain == null)
+        {
+            Console.WriteLine("Game does not exist.");
+            return;
+        }
+
+        Game game = await itadApi.GameInfo(plain);
+        Console.WriteLine(game.ToString());
     }
 }
