@@ -1,22 +1,17 @@
 ﻿namespace Game_DB_Tool;
 
-public class Price
+/// <summary>
+/// Represents a price in a certain shop for a video game. Contains information about the old price and price cut, if the price is a sale.
+/// </summary>
+public class Price(double priceNew, double priceOld, double priceCut, string shopId)
 {
-    public double priceNew { get; set; }
-    public double priceOld { get; set; }
-    public double priceCut { get; set; }
-    public string shopId { get; set; }
-
-    public Price(double priceNew, double priceOld, double priceCut, string shopId)
-    {
-        this.priceNew = priceNew;
-        this.priceOld = priceOld;
-        this.priceCut = priceCut;
-        this.shopId = shopId;
-    }
+    public double PriceNew { get; } = priceNew;
+    public double PriceOld { get; } = priceOld;
+    public double PriceCut { get; } = priceCut;
+    public string ShopId { get; } = shopId;
 
     public override string ToString()
     {
-        return $"new: {priceNew} | old: {priceOld} | price cut: {priceCut}% | shop id: {shopId}";
+        return $"new: {PriceNew} | old: {PriceOld} | price cut: {PriceCut}% | shop id: {ShopId}";
     }
 }

@@ -1,20 +1,17 @@
 ﻿namespace Game_DB_Tool;
 
-public class Query
+/// <summary>
+/// Represents a query.
+/// </summary>
+public class Query(Arguments arguments, ItadApi itadApi)
 {
-    private Arguments arguments;
-    private string command;
-    private string?[] parameters;
-    private ItadApi itadApi;
+    private Arguments arguments = arguments;
+    private string command = arguments.Command;
+    private string?[] parameters = arguments.Parameters;
 
-    public Query(Arguments arguments, ItadApi itadApi)
-    {
-        this.arguments = arguments;
-        command = arguments.Command;
-        parameters = arguments.Parameters;
-        this.itadApi = itadApi;
-    }
-
+    /// <summary>
+    ///     Runs the query given in the "command" argument.
+    /// </summary>
     public async Task RunQuery()
     {
         switch (command)
@@ -32,12 +29,17 @@ public class Query
         }
     }
 
+    /// <summary>
+    ///     Prints the invalid query message.
+    /// </summary>
     private void InvalidQuery()
     {
         Console.WriteLine("Invalid query. Type 'help' to get a list of commands.");
     }
 
-    // Given the title of the game, get the prices for it
+    /// <summary>
+    ///     Retrieves and prints the prices of the game given in the parameters.
+    /// </summary>
     private async Task Prices()
     {
         // Make sure the parameters list has at least 1 parameter
@@ -72,7 +74,7 @@ public class Query
 
         // Get the title of the game
         Game game = await itadApi.GameInfo(plain);
-        string gameTitle = game.title;
+        string gameTitle = game.Title;
 
         Console.WriteLine($"Here are all the prices for {gameTitle}");
         foreach (Price price in prices)
@@ -81,7 +83,9 @@ public class Query
         }
     }
 
-    // Given the title of the game, get its information
+    /// <summary>
+    ///     Retrieves and prints information about the game given in the parameters.
+    /// </summary>
     private async Task GameInfo()
     {
         // Make sure the parameters list has at least 1 parameter
@@ -97,7 +101,7 @@ public class Query
             title += " " + parameters[i];
         }
 
-        // Get the plain from the API
+        // Get plain from title from the API
         var plain = await itadApi.GetPlainFromTitle(title);
         if (plain == null)
         {

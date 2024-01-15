@@ -1,7 +1,9 @@
-﻿// Uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
+﻿namespace Game_DB_Tool;
 
-namespace Game_DB_Tool;
-
+/// <summary>
+/// The main class of the program. Gets parameters from the command line and runs the given query.
+/// Uses the IsThereAnyDeal.com API https://itad.docs.apiary.io/
+/// </summary>
 internal class Program
 {
     private const string configFilePath = "Config.json";
@@ -14,7 +16,7 @@ internal class Program
         if (File.Exists("Config.json"))
         {
             var config = new Config("Config.json");
-            itadApiKey = config.getItadApiKey();
+            itadApiKey = config.itadApiKey;
         }
         else
         {

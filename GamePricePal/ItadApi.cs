@@ -3,6 +3,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Game_DB_Tool;
 
+/// <summary>
+/// Represents the IsThereAnyDeal API. Provides functions to access the API endpoints.
+/// </summary>
 public class ItadApi
 {
     private const string baseUrl = "https://api.isthereanydeal.com/";

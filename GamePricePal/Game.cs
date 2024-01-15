@@ -1,17 +1,20 @@
 ﻿namespace Game_DB_Tool;
 
+/// <summary>
+/// Represents and contains information about a game.
+/// </summary>
 public class Game(string title, string id, bool isDlc, bool achievements, bool tradingCards)
 {
-    public string title = title;
-    public string id = id;
-    public bool isDlc = isDlc;
-    public bool achievements = achievements;
-    public bool tradingCards = tradingCards;
+    public readonly string Title = title;
+    public readonly string Id = id;
+    public readonly bool IsDlc = isDlc;
+    public readonly bool Achievements = achievements;
+    public readonly bool TradingCards = tradingCards;
 
     public override string ToString()
     {
         string str =
-            $"title: {title} | id: {id} | isDlc: {isDlc} | achievements: {achievements} | tradingCards: {tradingCards}";
+            $"title: {Title} | id: {Id} | isDlc: {IsDlc} | achievements: {Achievements} | tradingCards: {TradingCards}";
         return str;
     }
 }

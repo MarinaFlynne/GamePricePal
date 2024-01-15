@@ -1,8 +1,14 @@
 ﻿namespace Game_DB_Tool;
 
+/// <summary>
+/// Represents arguments given to the command line.
+/// </summary>
 public class Arguments
 {
+    // The first argument given. Represents the command that the user would like to execute.
     public string Command { get; }
+
+    //The rest of the given arguments. Represents the parameters that the user specifies for the command.
     public string?[] Parameters { get; }
 
     public Arguments(string[] args)
